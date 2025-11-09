@@ -1,0 +1,118 @@
+!-------------------------------------------------------------
+! H3C Switch Basic Command Configuration
+!-------------------------------------------------------------
+! Purpose:
+! This guide covers essential configuration commands for H3C
+! switches including VLAN setup, IP configuration, user setup,
+! port management, QoS configuration, and system maintenance.
+!-------------------------------------------------------------
+
+!-------------------------------------------------------------
+! Step 1: Basic Configuration
+<H3C>                                ! User view prompt
+<H3C> system-view                    ! Enter system configuration view
+[H3C] sysname Netronix-SW01          ! Set hostname
+
+!-------------------------------------------------------------
+! Step 2: User Configuration
+[H3C] super password H3C             ! Set privileged (super) password
+[H3C] undo super password            ! Delete privileged password
+[H3C] localuser admin 123456 1       ! Create Web management user; 1 = admin level
+[H3C] undo localuser admin           ! Delete Web management user
+
+! Console access (AUX interface)
+[H3C] user-interface aux 0
+[H3C-Aux0] idle-timeout 250          ! Set idle timeout (2 min 50 sec)
+[H3C-Aux0] undo idle-timeout         ! Restore default timeout
+
+! Telnet/VTY access
+[H3C] user-interface vty 0
+[H3C-vty0] idle-timeout 250
+[H3C-vty0] undo idle-timeout
+[H3C-vty0] set authentication password 123456  ! Set Telnet password
+[H3C-vty0] undo set authentication password     ! Remove Telnet password
+
+! Display user and interface info
+[H3C] display users
+[H3C] display user-interface
+
+!-------------------------------------------------------------
+! Step 3: VLAN Configuration
+[H3C] vlan 2                         ! Create VLAN 2
+[H3C] undo vlan all                  ! Delete all VLANs (default VLAN cannot be deleted)
+[H3C-vlan2] port Ethernet0/4 to Ethernet0/7     ! Add ports 4–7 to VLAN 2
+[H3C-vlan2] port-isolate enable      ! Enable port isolation within VLAN
+[H3C-Ethernet0/4] port-isolate uplink-port vlan 2 ! Set uplink port for VLAN2
+[H3C] display vlan all               ! Show all VLAN info
+
+! Create and manage user-groups
+[H3C] user-group 20
+[H3C-UserGroup20] port Ethernet0/4 to Ethernet0/7
+[H3C] display user-group 20
+
+!-------------------------------------------------------------
+! Step 4: Switch IP Configuration
+[H3C] vlan 20
+[H3C] management-vlan 20
+[H3C] interface vlan-interface 20
+[H3C-Vlan-interface20] ip address 192.168.1.2 255.255.255.0
+[H3C-Vlan-interface20] ip gateway 192.168.1.1
+[H3C-Vlan-interface20] shutdown       ! Disable interface
+[H3C-Vlan-interface20] undo shutdown  ! Enable interface
+[H3C] display ip
+[H3C] display interface vlan-interface 20
+
+! Enable/Disable debugging
+<H3C> debugging ip
+<H3C> undo debugging ip
+
+!-------------------------------------------------------------
+! Step 5: DHCP Client Configuration
+[H3C-Vlan-interface20] ip address dhcp-alloc
+[H3C-Vlan-interface20] undo ip address dhcp-alloc
+[H3C] display dhcp
+<H3C> debugging dhcp-alloc
+<H3C> undo debugging dhcp-alloc
+
+!-------------------------------------------------------------
+! Step 6: Port Configuration
+[H3C] interface Ethernet0/3
+[H3C-Ethernet0/3] shutdown
+[H3C-Ethernet0/3] speed 100
+[H3C-Ethernet0/3] duplex full
+[H3C-Ethernet0/3] flow-control
+[H3C-Ethernet0/3] broadcast-suppression 20
+[H3C-Ethernet0/3] loopback internal
+[H3C-Ethernet0/3] port link-type trunk
+[H3C-Ethernet0/3] port trunk pvid vlan 20
+[H3C-Ethernet0/3] port access vlan 20
+[H3C-Ethernet0/3] port trunk permit vlan all
+[H3C-Ethernet0/3] mdi auto
+
+! Port aggregation and mirroring
+[H3C] link-aggregation Ethernet0/1 to Ethernet0/4
+[H3C] undo link-aggregation Ethernet0/1
+[H3C] link-aggregation mode egress
+[H3C] monitor-port Ethernet0/2
+[H3C] mirroring-port Ethernet0/3 to Ethernet0/4 both
+[H3C] display mirror
+[H3C] display interface Ethernet0/3
+<H3C> reset counters
+[H3C] display link-aggregation Ethernet0/3
+[H3C-Ethernet0/3] virtual-cable-test
+
+!-------------------------------------------------------------
+! Step 7: QoS Priority Configuration
+[H3C-Ethernet0/3] priority 7
+[H3C] priority-trust cos
+[H3C] queue-scheduler hq-wrr 2 4 6 8
+[H3C-Ethernet0/3] line-rate inbound 29
+[H3C] display queue-scheduler
+[H3C] display priority-trust
+
+!-------------------------------------------------------------
+! Conclusion:
+! These commands provide a foundation for configuring H3C
+! switches, including VLANs, user access, IP setup, DHCP, 
+! port management, aggregation, mirroring, and QoS tuning.
+!-------------------------------------------------------------
