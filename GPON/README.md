@@ -1,3 +1,16 @@
+<h1 align="center">🖧 GPON-OLT Configuration & Troubleshooting Guide</h1>
+
+<p align="center">
+A complete reference for managing, configuring, and troubleshooting network switches.<br>
+Designed & maintained by <a href="https://github.com/Netronixbd">Amir Hosan</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/status-Active-success?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/device-Olt-blue?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/network-LAN%20%7C%20VLAN%20%7C%20Trunk-orange?style=for-the-badge"/>
+</p>
+
 # 🌐 Understanding GPON (Gigabit Passive Optical Network)
 
 ---
