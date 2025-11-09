@@ -68,6 +68,5 @@ Whether you're managing a large ISP or setting up a lab, this collection will he
 Network Engineer
 🎓 B.Sc. in Computer Science & Engineering
 
-📍 Address: Badda, Dhaka-1212, Bangladesh
 🔗 GitHub
  | LinkedIn
