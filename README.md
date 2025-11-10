@@ -29,6 +29,7 @@ Whether you're managing a large ISP or setting up a lab, this collection will he
 |-----------|----------|-----------|
 | **VSOL** | EPON/GPON | ✅ Supported |
 | **BDCOM** | EPON/GPON | ✅ Supported |
+| **BT-PON** | EPON/GPON | ✅ Supported 
 | **AVEIS** | GPON | ✅ Supported |
 | **ZEBBIX** | GPON | ✅ Supported |
 | **CDATA** | EPON/GPON | ✅ Supported |
